@@ -1,6 +1,47 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from django.contrib.auth import login, logout, authenticate
+
+
+def user_logout(request):
+    logout(request)
+
+    return redirect('login')
+
+
+def user_profile(request):
+    return render(request, 'user/profile.html')
+
+
+def user_login(request):
+    print(request.user)
+    message = ''
+    if request.method == 'POST':
+        print(request.POST)
+        if request.POST.get("register"):
+            return redirect('register')
+
+        if request.POST.get('login'):
+            username = request.POST.get("username")
+            password = request.POST.get("password")
+            if password == '' or username == '':
+                message = '帳號密碼不能為空'
+            else:
+                # 登入動作
+                user = authenticate(
+                    request, username=username, password=password)
+                if not user:
+                    if User.objects.filter(username=username):
+                        message = "密碼錯誤"
+                    else:
+                        message = "帳號錯誤"
+                else:
+                    login(request, user)
+                    message = '登入成功'
+
+    return render(request, 'user/login.html', {'message': message})
+
 # Create your views here.
 
 
@@ -24,9 +65,13 @@ def user_register(request):
                 if User.objects.filter(username=username).exists():
                     message = '帳號重複'
                 else:
-                    User.objects.create_user(
-                        username=username, password=password1).save()
+                    user = User.objects.create_user(
+                        username=username, password=password1)
+                    user.save()
+
+                    login(request, user)
                     message = '註冊成功!'
+                    return redirect('profile')
         except Exception as e:
             print(e)
             message = '註冊失敗'
