@@ -10,8 +10,13 @@ def user_logout(request):
     return redirect('login')
 
 
-def user_profile(request):
-    return render(request, 'user/profile.html')
+def user_profile(request, id):
+    user = None
+    try:
+        user = User.objects.get(pk=id)
+    except Exception as e:
+        print(e)
+    return render(request, 'user/profile.html', {'user': user})
 
 
 def user_login(request):
@@ -39,6 +44,7 @@ def user_login(request):
                 else:
                     login(request, user)
                     message = '登入成功'
+                    return redirect('todo')
 
     return render(request, 'user/login.html', {'message': message})
 
