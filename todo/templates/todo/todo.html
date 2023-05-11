@@ -4,5 +4,13 @@
 {% endblock %}
 {% block content %}
 <h1>TodoList</h1>
+{% for todo in todos %}
+<li>{{todo.created}}{{todo.title}}
+    {% if todo.important %}
+    <span style="color:red">重要!</span>
+    {% endif %}
+</li>
+{% endfor %}
+
 
 {% endblock %}
