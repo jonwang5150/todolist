@@ -55,32 +55,34 @@ def user_login(request):
 
 
 def user_register(request):
-    form = UserCreationForm()
     message = ''
+    form = UserCreationForm()
     if request.method == 'GET':
         print('GET')
 
     if request.method == 'POST':
         try:
-            username = request.POST.get("username")
-            password1 = request.POST.get("password1")
-            password2 = request.POST.get("password2")
+            username = request.POST.get('username')
+            email = request.POST.get('email')
+            password1 = request.POST.get('password1')
+            password2 = request.POST.get('password2')
+            print(username, password1, password2, email)
 
             if len(password1) < 8:
                 message = '密碼過短'
             elif password1 != password2:
-                message = "兩次密碼不同"
+                message = '兩次密碼不同'
             else:
                 if User.objects.filter(username=username).exists():
                     message = '帳號重複'
                 else:
                     user = User.objects.create_user(
-                        username=username, password=password1)
+                        username=username, password=password1, email=email)
                     user.save()
-
                     login(request, user)
                     message = '註冊成功!'
-                    return redirect('profile')
+                    return redirect('todolist')
+                #　帳號重複檢查
         except Exception as e:
             print(e)
             message = '註冊失敗'
