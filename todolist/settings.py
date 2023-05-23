@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-+r1d!fyzyyyv#%wl5&z0la&j8%*5!$(%#p43&^i3xg@dgl9opd"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -88,9 +88,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'todolist',
         'USER': 'root',
-        'PASSWORD': 'password',
+        # 'PASSWORD': 'password',
         'HOST': 'localhost',
-        'HOST': 'database-1.caxp156xs8gy.ap-northeast-1.rds.amazonaws.com',
+        # 'HOST': 'database-1.c7uwg1ycgcb2.us-east-1.rds.amazonaws.com',
         'PORT': '3306',
     }
 }
@@ -123,7 +123,7 @@ TIME_ZONE = "Asia/Taipei"
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)

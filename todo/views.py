@@ -44,6 +44,8 @@ def create_todo(request):
             form = TodoForm(request.POST)
             todo = form.save(commit=False)
             todo.user = request.user
+            if todo.completed:
+                todo.date_completed = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             todo.save()
             # message='建立todo成功!'
             return redirect('todolist')
